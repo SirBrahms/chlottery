@@ -8,10 +8,14 @@
 
 #define INITIAL_MAX_LEN 128
 
+// returns a random number between min and max
 int rand_range(int max, int min) {
 	return rand() % (max + 1 - min) + max;
 }
 
+// randomises the access permissions of one file
+// if special is true, it also randomises the special bits
+// if verbose is true, it outputs the path and new mode
 void roll_chmod(char* path, bool special, bool verbose) {
 	int owner = rand_range(0, 7);
 	int group = rand_range(0, 7);
@@ -24,7 +28,7 @@ void roll_chmod(char* path, bool special, bool verbose) {
 		spec_perm = 0;
 	
 	if (verbose) {
-		int mode_decimal = special * 1000 + owner * 100 + group * 10 + other;
+		const int mode_decimal = special * 1000 + owner * 100 + group * 10 + other;
 		printf("%s - %d\n", path, mode_decimal);
 	}
 
@@ -43,6 +47,10 @@ void roll_chmod(char* path, bool special, bool verbose) {
 	}
 }
 
+// iterates through all subdirectories of a base directory and changes permissions
+// if special is true, it also randomises the special bits
+// if verbose is true, it outputs the path and the new mode
+// (this function uses roll_chmod to set the modes on single files)
 void roll_recursive(char* base_path, bool special, bool verbose) {
 	char* buf = malloc(INITIAL_MAX_LEN * sizeof(char));
 	struct dirent* dp;
@@ -74,6 +82,8 @@ void roll_recursive(char* base_path, bool special, bool verbose) {
 	return;
 }
 
+// parses the arguments and passes them to the main operation functions
+// also seeds the random number generator with the current time
 int main(int argc, char** argv) {
 	srand(time(NULL));
 	bool recurse = false;
