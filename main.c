@@ -29,7 +29,7 @@ void roll_chmod(char* path, bool special, bool verbose) {
 	
 	if (verbose) {
 		const int mode_decimal = special * 1000 + owner * 100 + group * 10 + other;
-		printf("%s - %d\n", path, mode_decimal);
+		printf("%s - %04d\n", path, mode_decimal);
 	}
 
 	mode_t mode = spec_perm << 9 | owner << 6 | group << 3 | other;
