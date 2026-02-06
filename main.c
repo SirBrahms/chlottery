@@ -61,7 +61,7 @@ void roll_recursive(char* base_path, bool special, bool verbose) {
 	}
 	
 	while ((dp = readdir(dir)) != NULL) {
-		if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) {
+		if (strcmp(dp->d_name, ".") && strcmp(dp->d_name, "..")) {
 			const int new_len = strlen(base_path) + strlen(dp->d_name) + 1;
 			if (new_len > INITIAL_MAX_LEN) {
 				buf = realloc(buf, new_len);
