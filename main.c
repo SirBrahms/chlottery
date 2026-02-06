@@ -54,9 +54,9 @@ void roll_recursive(char* base_path, bool special, bool verbose) {
 	
 	while ((dp = readdir(dir)) != NULL) {
 		if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) {
-			if (strlen(base_path) >= INITIAL_MAX_LEN) {
-				printf("Here %d\n", strlen(base_path));
-				buf = realloc(buf, strlen(base_path) + strlen(dp->d_name + 1));
+			const int new_len = strlen(base_path) + strlen(dp->d_name) + 1;
+			if (new_len > INITIAL_MAX_LEN) {
+				buf = realloc(buf, new_len);
 			}
 			
 			strcpy(buf, base_path);
